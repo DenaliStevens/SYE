@@ -4,8 +4,12 @@ library(tidyverse)
 tuesdata <- tidytuesdayR::tt_load('2022-03-29')
 tuesdata <- tidytuesdayR::tt_load(2022, week = 13)
 CollegiateSports <- tuesdata$sports
+slu <- CollegiateSports |> filter(institution_name == "St Lawrence University")
+view(slu)
 
-# Define UI for application that creates a datatable
+
+
+# Define UI for application that creates a data table
 ui <- fluidPage(
   
   # Application title
@@ -34,6 +38,7 @@ ui <- fluidPage(
   ),
   # Create a new row for the table.
   DT::dataTableOutput("table")
+  
 )
 
 
