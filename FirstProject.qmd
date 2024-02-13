@@ -1,0 +1,33 @@
+---
+title: "Collegiate Sports Budgets"
+author: "Denali Stevens"
+format: html
+---
+
+```{r}
+library(tidyverse)
+tuesdata <- tidytuesdayR::tt_load('2022-03-29')
+tuesdata <- tidytuesdayR::tt_load(2022, week = 13)
+sports <- tuesdata$sports
+
+# start by looking at University of Oregon 
+Oregon <- sports |> filter(institution_name == "University of Oregon")
+# narrow down the variables
+# Keep year, all ef values, all Participation values, all revenu, all expenditures, and name of sport 
+Oregon_filtered <- Oregon |> select(year, starts_with("ef"), contains("partic"), contains("rev"), contains("exp"), sports)
+view(Oregon_filtered)
+```
+
+Ideas of what to explore:
+Using Shiny 
+
+
+## Playing with Shiny
+```{r}
+library(shiny)
+runExample("01_hello")
+library(ggplot2)
+view(mpg)
+sports |> select(sports)
+```
+
