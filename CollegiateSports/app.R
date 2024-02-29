@@ -4,10 +4,6 @@ library(tidyverse)
 tuesdata <- tidytuesdayR::tt_load('2022-03-29')
 tuesdata <- tidytuesdayR::tt_load(2022, week = 13)
 CollegiateSports <- tuesdata$sports
-slu <- CollegiateSports |> filter(institution_name == "St Lawrence University")
-view(slu)
-
-
 
 # Define UI for application that creates a data table
 ui <- fluidPage(
@@ -34,7 +30,9 @@ ui <- fluidPage(
                           "Sport: ",
                           c("All",
                             unique(as.character(CollegiateSports$sports))))
+          
     )
+    
   ),
   # Create a new row for the table.
   DT::dataTableOutput("table")
@@ -62,3 +60,5 @@ server <- function(input, output) {
 }
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+
