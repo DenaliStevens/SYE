@@ -102,7 +102,7 @@ ggplot(data = school_select_rev_expend, aes(x = year, y = Dollars, fill = Type))
     labels = scales::label_dollar()) +
   labs(title = str_glue("Total Revenue and Expenditure for Sports\nat {school_name}")) +
   theme_minimal() +
-  scale_fill_viridis_d()
+  scale_fill_viridis_d(option = 'cividis')
 ```
 
 ```{r}

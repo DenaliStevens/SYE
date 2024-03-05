@@ -71,11 +71,14 @@ server <- function(input, output) {
       scale_y_continuous("Dollars",
                          breaks = scales::breaks_extended(8),
                          labels = scales::label_dollar()) +
-      labs(title = str_glue("Total Revenue and Expenditure for Sports\nat {school_name}")) +
+      labs(title = str_glue("Total Revenue and Expenditure for Sports\nat {input$institution_name}")) +
       theme_minimal() +
-      scale_fill_viridis_d()
+      scale_fill_viridis_d(labels = c('Total Expenditiure', 'Total Revenue'),
+                           option = 'cividis')
     })
 }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+## Next I want to incorporate being able to select a division or just a sport 
