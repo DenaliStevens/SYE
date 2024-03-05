@@ -43,7 +43,7 @@ ui <- fluidPage(
     
     # Create a spot for the barplot
     mainPanel(
-      plotOutput("revExpendPlot")
+      plotOutput("plot1")
         )
     )
 )
@@ -54,7 +54,7 @@ server <- function(input, output) {
   ## This select is where I'm still having problems and don't know how to use my data as an input instead 
   selectedData <- reactive({
     # div1_rev_expend[, c(input$institution_name)]
-    select_for_plot <- div1_rev_expend |> filter(institution_name = input$institution_name) |>
+    select_for_plot <- div1_rev_expend |> filter(institution_name == input$institution_name) |>
       filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen)) |>
       group_by(institution_name, year) |>
       summarise(total_rev = sum(total_rev_menwomen), total_exp = sum(total_exp_menwomen)) |>
