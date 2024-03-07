@@ -62,17 +62,18 @@ group_by(institution_name, year) |> summarise(total_rev = sum(total_rev_menwomen
 div1_pivot <- div1_collapsed |> pivot_longer(cols = c(total_rev, total_exp),
                            names_to = "Type", values_to = "Dollars")
 
-ggplot(data = div1_pivot, aes(x = year, y = Dollars, fill = Type)) +
-  geom_col(position = "dodge") +
-  facet_wrap(~institution_name) +
-    scale_y_continuous("Dollars",
-    breaks = scales::breaks_extended(8),
-    labels = scales::label_dollar())
+
+## ggplot(data = div1_pivot, aes(x = year, y = Dollars, fill = Type)) +
+  #geom_col(position = "dodge") +
+  #facet_wrap(~institution_name) +
+    #scale_y_continuous("Dollars",
+    #breaks = scales::breaks_extended(8),
+    #labels = scales::label_dollar())
 ## this is too many, try top 10 schools for rev
 
-top10_rev <- div1_rev_expend |> filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen)) |>
-group_by(institution_name) |> summarise(total_rev = sum(total_rev_menwomen), total_exp = sum(total_exp_menwomen)) |>
-  arrange(desc(total_rev)) |> slice(1:10)
+# top10_rev <- div1_rev_expend |> filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen)) |>
+# group_by(institution_name) |> summarise(total_rev = sum(total_rev_menwomen), total_exp = sum(total_exp_menwomen)) |>
+  # arrange(desc(total_rev)) |> slice(1:10)
 
 ## create a vector with names of the universities from top 10
 
@@ -106,10 +107,55 @@ ggplot(data = school_select_rev_expend, aes(x = year, y = Dollars, fill = Type))
 ```
 
 ```{r}
-library(datasets)
-WorldPhones
-
 div1_rev_expend |> pull(institution_name)
+```
+
+
+Try combining data for all schools by sport and year
+  side by side boxplots 
+  
+Different plots for different comparisons 
+
+Set up a tabb structure 
+  tab panel 
+  shiney tabs 
+  
+```{r}
+# Now were going by sport, so go through CollegiateSports and only keep what is needed 
+sport_smaller <- CollegiateSports |> select(1,3, 8, 24, 27, 28)
+
+chose_sport <- "Football"
+
+selected_sport <- sport_smaller |> filter(sports == chose_sport) |>
+  filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen))
+
+# jokes, stick with only D1
+# I think it might need to be narrowed down by year - it's just gonna be too much with all of these schools and more than one year 
+
+chose_year <- 2019
+
+selected_sport <- div1_rev_expend |> filter(sports == chose_sport) |>
+  filter(year == chose_year) |> 
+  filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen)) |>
+  group_by(institution_name, year) |>
+  summarise(total_rev = sum(total_rev_menwomen), total_exp = sum(total_exp_menwomen)) |>
+  pivot_longer(cols = c(total_rev, total_exp),
+                           names_to = "Type", values_to = "Dollars")
+
+ggplot(data = selected_sport, aes(x = institution_name, y = Dollars, fill = Type)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous("Dollars",
+    breaks = scales::breaks_extended(8),
+    labels = scales::label_dollar())
+
+ggplot(data = selected_sport, aes(x = year, y = Dollars, fill = Type)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous("Dollars",
+    breaks = scales::breaks_extended(8),
+    labels = scales::label_dollar()) +
+  facet_wrap(~institution_name)
+
+
 ```
 
 
