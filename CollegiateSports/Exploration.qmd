@@ -15,6 +15,7 @@ CollegiateSports <- tuesdata$sports
 
 # filter so its only Division 1 sports 
 div1 <- CollegiateSports |> filter(grepl('NCAA Division I', classification_name)) |> filter(classification_code <= 3)
+
 #str detect
 # check that after I, its not another I, or exactly one I
 
@@ -132,29 +133,88 @@ selected_sport <- sport_smaller |> filter(sports == chose_sport) |>
 # jokes, stick with only D1
 # I think it might need to be narrowed down by year - it's just gonna be too much with all of these schools and more than one year 
 
-chose_year <- 2019
+# chose_year <- 2019
 
 selected_sport <- div1_rev_expend |> filter(sports == chose_sport) |>
-  filter(year == chose_year) |> 
   filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen)) |>
-  group_by(institution_name, year) |>
+  group_by(institution_name, year, classification_name, sports) |>
   summarise(total_rev = sum(total_rev_menwomen), total_exp = sum(total_exp_menwomen)) |>
   pivot_longer(cols = c(total_rev, total_exp),
                            names_to = "Type", values_to = "Dollars")
 
-ggplot(data = selected_sport, aes(x = institution_name, y = Dollars, fill = Type)) +
-  geom_col(position = "dodge") +
-  scale_y_continuous("Dollars",
-    breaks = scales::breaks_extended(8),
-    labels = scales::label_dollar())
+## ggplot(data = selected_sport, aes(x = institution_name, y = Dollars, fill = Type)) +
+  ## geom_col(position = "dodge") +
+  ## scale_y_continuous("Dollars",
+    ## breaks = scales::breaks_extended(8),
+    ## labels = scales::label_dollar())
 
-ggplot(data = selected_sport, aes(x = year, y = Dollars, fill = Type)) +
-  geom_col(position = "dodge") +
+# Combined rev and expend for all D1 teams 
+# FBS is the highest level of college football 
+ggplot(data = selected_sport, aes(x = factor(year), y = Dollars, fill = Type)) +
+  geom_boxplot() +
   scale_y_continuous("Dollars",
     breaks = scales::breaks_extended(8),
     labels = scales::label_dollar()) +
-  facet_wrap(~institution_name)
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = str_glue("Total Revenue and Expenditure for\nDivision 1 {chose_sport}, 2015-2019"),
+       x = "Year")
 
+## label the school with highest rev and expend each year 
+highest_rev <- 
+  selected_sport |> 
+  filter(Type == "total_rev") |>
+  ungroup() |>
+  group_by(year) |> 
+  slice_max(Dollars, n = 1)
+
+highest_expend <- 
+  selected_sport |> 
+  filter(Type == "total_exp") |>
+  ungroup() |>
+  group_by(year) |> 
+  slice_max(Dollars, n = 1)
+
+label_graph <- full_join(highest_rev, highest_expend)
+
+library(ggrepel)
+ggplot(data = selected_sport, aes(x = factor(year), y = Dollars, fill = Type)) +
+  geom_boxplot() +
+  geom_label(data = label_graph, aes(label = institution_name)) +
+  scale_y_continuous("Dollars",
+    breaks = scales::breaks_extended(8),
+    labels = scales::label_dollar()) 
+## hard no, ugly af. Do just top 1 and then I'll do a side plot to investigate like top 5? in each 
+ggplot(data = selected_sport, aes(x = factor(year), y = Dollars, fill = Type)) +
+  geom_boxplot() +
+  geom_label_repel(data = label_graph, aes(label = institution_name)) +
+  # geom_label(data = label_graph, aes(label = institution_name)) +
+  scale_y_continuous("Dollars",
+    breaks = scales::breaks_extended(8),
+    labels = scales::label_dollar()) 
+
+# now make a side plot showing top 5 in revenue and expend for each year 
+highest_rev_5 <- 
+  selected_sport |> 
+  filter(Type == "total_rev") |>
+  ungroup() |>
+  group_by(year) |> 
+  slice_max(Dollars, n = 5)
+
+highest_expend_5 <- 
+  selected_sport |> 
+  filter(Type == "total_exp") |>
+  ungroup() |>
+  group_by(year) |> 
+  slice_max(Dollars, n = 5)
+
+top5 <- full_join(highest_rev_5, highest_expend_5)
+ggplot(data = top5, aes(y = Dollars, x = factor(year))) +
+  geom_point(aes(colour = Type)) +
+  geom_label_repel(data = top5, aes(label = institution_name)) +
+    scale_y_continuous("Dollars",
+    breaks = scales::breaks_extended(8),
+    labels = scales::label_dollar()) 
+  
 
 ```
 
