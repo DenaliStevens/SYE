@@ -29,7 +29,7 @@ university_names <- div1_rev_expend |> pull(institution_name)
 ui <- fluidPage(
 
   # Give the page a title
-  titlePanel("Revenue and Expenditure for D1 Sports 2015 - 2019"),
+  titlePanel("Revenue and Expenditure for D1 Sports 2015 - 2019, By School"),
   
   # Generate a row with a sidebar
   sidebarLayout(      
