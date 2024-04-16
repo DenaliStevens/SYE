@@ -62,6 +62,7 @@ server <- function(input, output) {
                    names_to = "Type", values_to = "Dollars")
   })
 
+  
   # Fill in the spot we created for a plot
   output$plot1 <- renderPlot({
     
