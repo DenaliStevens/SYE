@@ -1,0 +1,19 @@
+---
+title: "QR"
+format: html
+---
+
+```{r}
+library(qrcode)
+code <- qr_code("https://stlawu.shinyapps.io/ncaa_div1_rev_expend/")
+print(code)
+plot(code)
+generate_svg(code, filename = "rev/enpend/qr.svg")
+```
+
+```{r}
+code2 <- qr_code("https://stlawu.shinyapps.io/national_parks/")
+print(code2)
+plot(code2)
+```
+
