@@ -8,6 +8,4 @@ format: html
 ### Student at St. Lawrence University 
 ## Graduating Class of 2024 and Majoring in Data Science 
 
-## Education
 
-## Experience 
