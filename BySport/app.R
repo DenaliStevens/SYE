@@ -15,8 +15,8 @@ div1_smaller <- div1 |> select(1,3,7,8,20:28)
 
 div1_rev_expend <- div1_smaller |> select(1:4, 9, 12, 13)
 
-selected_sport <- sport_smaller |> filter(sports == chose_sport) |>
-  filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen))
+# selected_sport <- sport_smaller |> filter(sports == chose_sport) |>
+  # filter(!is.na(total_rev_menwomen), !is.na(total_exp_menwomen))
 
 sports <- div1 |> pull(sports) |> unique()
 
