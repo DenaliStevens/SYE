@@ -3,9 +3,7 @@ library(shiny)
 library(tidyverse)
 library(scales)
 library(dplyr)
-# tuesdata <- tidytuesdayR::tt_load('2022-03-29')
-# tuesdata <- tidytuesdayR::tt_load(2022, week = 13)
-# CollegiateSports <- tuesdata$sports
+
 CollegiateSports <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-03-29/sports.csv')
 
 
