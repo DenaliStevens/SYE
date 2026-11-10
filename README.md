@@ -4,3 +4,8 @@ This is a collection of shiny apps that I built during my senior year experience
 
 **By Sport App**
 https://denali01.shinyapps.io/BySport/
+
+**By School App**
+https://denali01.shinyapps.io/BySchool/
+
+
